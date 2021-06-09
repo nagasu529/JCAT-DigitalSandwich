@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="lib1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/Repast-3.1/RepastJ/lib/log4j-1.2.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/Repast-3.1/RepastJ/lib/colt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/Repast-3.1/RepastJ/lib/junit.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

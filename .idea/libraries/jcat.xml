@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jcat">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/jcat.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,73 @@
+###############################################################
+#  sample configuration file for a single specialist          #
+###############################################################
+
+
+###############################################################
+# infrastructure for catp
+
+cat.infrastructure = edu.cuny.cat.comm.SocketBasedInfrastructureImpl
+#cat.infrastructure.server = tac.csc.liv.ac.uk
+cat.infrastructure.port = 9090
+
+
+###############################################################
+# specialists
+
+cat.specialist.n = 1
+
+cat.specialist.0 = edu.cuny.cat.MarketClient
+cat.specialist.0.n = 1
+cat.specialist.0.type = specialist
+cat.specialist.0.id = cat09-cestlavie
+cat.specialist.0.auctioneer = edu.cuny.cat.market.GenericDoubleAuctioneer
+cat.specialist.0.auctioneer.pricing = cat09.agent.cestlavie.cestlaviePricingPolicy
+cat.specialist.0.auctioneer.pricing.n = 100
+cat.specialist.0.auctioneer.clearing = edu.cuny.cat.market.clearing.ProbabilisticClearingCondition
+cat.specialist.0.auctioneer.clearing.threshold = 0.7
+cat.specialist.0.auctioneer.accepting = edu.cuny.cat.market.accepting.EquilibriumBeatingAcceptingPolicy
+cat.specialist.0.auctioneer.accepting.delta = 25
+cat.specialist.0.auctioneer.accepting.learner = edu.cuny.ai.learning.SlidingWindowLearner
+cat.specialist.0.auctioneer.accepting.learner.windowsize = 10
+cat.specialist.0.auctioneer.charging = cat09.agent.cestlavie.cestlavieChargingPolicy
+cat.specialist.0.auctioneer.charging.cutratio = 0.5
+cat.specialist.0.auctioneer.charging.registration = 0
+cat.specialist.0.auctioneer.charging.information = 0
+cat.specialist.0.auctioneer.charging.shout = 0
+cat.specialist.0.auctioneer.charging.transaction = 0
+cat.specialist.0.auctioneer.charging.profit = 0
+cat.specialist.0.auctioneer.charging.profit.learner = edu.cuny.ai.learning.SlidingWindowLearner
+cat.specialist.0.auctioneer.charging.profit.scale = 0.5
+
+
+
+# gui logger
+
+cat.appender = guihtml
+
+###############################################################
+# log4j configuration - substitute INFO for DEBUG to turn on debugging output
+
+log4j.rootLogger=INFO, stdout
+
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%m%n
+
+log4j.appender.guihtml=edu.cuny.util.log4j.GraphicalAppender
+log4j.appender.guihtml.layout=edu.cuny.util.log4j.MyHTMLLayout
+log4j.appender.guihtml.layout.LocationInfo=true
+
+
+###############################################################
+# prng
+
+#  Use the 32bit version of the Mersenne Twister algorithm 
+cat.prng = edu.cuny.prng.MT32
+
+# use separate engine for each demand or not
+cat.usemultiengine = true
+
+#  with the following PRNG seed
+cat.seed = 4523
+

@@ -1,0 +1,70 @@
+###############################################################
+#  sample configuration file for a single specialist          #
+###############################################################
+
+
+###############################################################
+# infrastructure for catp
+
+cat.infrastructure = edu.cuny.cat.comm.SocketBasedInfrastructureImpl
+#cat.infrastructure.server = tac.csc.liv.ac.uk
+cat.infrastructure.port = 9090
+
+
+###############################################################
+# specialists
+
+cat.specialist.n = 1
+
+cat.specialist.0 = edu.cuny.cat.MarketClient
+cat.specialist.0.n = 1
+cat.specialist.0.type = specialist
+cat.specialist.0.id = cat11-jackaroo
+cat.specialist.0.auctioneer = edu.cuny.cat.market.GenericDoubleAuctioneer
+# jacShoutEngine with default setup is virtually a maximal matching, but 
+# jacShoutEngine, refactored from the code of jackaroo in cat'11 seems to work abnormally.
+#cat.specialist.0.auctioneer.matching = cat11.agent.jackaroo.jacShoutEngine
+cat.specialist.7.auctioneer.matching = edu.cuny.cat.market.matching.LazyMaxVolumeShoutEngine
+cat.specialist.0.auctioneer.pricing = cat11.agent.jackaroo.jacPricingPolicy
+cat.specialist.0.auctioneer.clearing = cat11.agent.jackaroo.jacClearingCondition
+cat.specialist.0.auctioneer.accepting = cat11.agent.jackaroo.jacAcceptingPolicy
+cat.specialist.0.auctioneer.subscribing = cat11.agent.jackaroo.jacSubscribingPolicy
+cat.specialist.0.auctioneer.charging = cat11.agent.jackaroo.jacChargingPolicy
+cat.specialist.0.auctioneer.charging.registration = 0
+cat.specialist.0.auctioneer.charging.information = 0
+cat.specialist.0.auctioneer.charging.shout = 0
+cat.specialist.0.auctioneer.charging.transaction = 0
+cat.specialist.0.auctioneer.charging.profit = 0.0
+
+
+
+# gui logger
+
+cat.appender = guihtml
+
+###############################################################
+# log4j configuration - substitute INFO for DEBUG to turn on debugging output
+
+log4j.rootLogger=INFO, stdout
+
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%m%n
+
+log4j.appender.guihtml=edu.cuny.util.log4j.GraphicalAppender
+log4j.appender.guihtml.layout=edu.cuny.util.log4j.MyHTMLLayout
+log4j.appender.guihtml.layout.LocationInfo=true
+
+
+###############################################################
+# prng
+
+#  Use the 32bit version of the Mersenne Twister algorithm 
+cat.prng = edu.cuny.prng.MT32
+
+# use separate engine for each demand or not
+cat.usemultiengine = true
+
+#  with the following PRNG seed
+cat.seed = 4523
+
