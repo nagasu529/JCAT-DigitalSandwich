@@ -6,7 +6,8 @@
 parent.0 = modules/prng.params
 parent.1 = modules/infrastructure.params
 parent.2 = modules/learner.params
-parent.3 = modules/traders-zic.params
+#parent.3 = modules/traders-zic.params
+parent.3 = modules/traders-tt.params
 parent.4 = modules/specialists.params
 parent.5 = modules/server.params
 
