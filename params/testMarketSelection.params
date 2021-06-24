@@ -1,0 +1,204 @@
+###############################################################
+#  default configuration file for cat game                    #
+###############################################################
+
+parent.0 = modules/telnetconsole.params
+parent.0 = modules/noconsole.params
+parent.0 = modules/guiconsole.params
+
+cat.server.gc = true
+
+###############################################################
+# trading agents
+
+cat.agent.n = 2
+
+#initialtradeentitlement = 3
+size = 3
+
+cat.agent.0 = edu.cuny.cat.TraderClient
+cat.agent.0.n = 1
+cat.agent.0.iseller = false
+cat.agent.0.type = buyer
+cat.agent.0.id = buyerZIC
+#cat.agent.0.initialtradeentitlement = 5;
+#cat.agent.0.tradtradeEntitlement = 20
+cat.agent.0.strategy = edu.cuny.cat.trader.strategy.RandomConstrainedStrategy
+cat.agent.0.marketselectionstrategy = edu.cuny.cat.trader.marketselection.StimuliResponseMarketSelectionStrategy
+cat.agent.0.marketselectionstrategy.learner = edu.cuny.ai.learning.NArmedBanditLearner
+cat.agent.0.marketselectionstrategy.learner.action_choosing = edu.cuny.ai.learning.EpsilonGreedyActionChoosingPolicy
+cat.agent.0.marketselectionstrategy.learner.action_choosing.epsilon = 0.1
+cat.agent.0.marketselectionstrategy.learner.return_updating = edu.cuny.ai.learning.AdaptiveReturnUpdatingPolicy
+cat.agent.0.marketselectionstrategy.learner.return_updating.learner = edu.cuny.ai.learning.SlidingWindowLearner
+
+cat.agent.1 = edu.cuny.cat.TraderClient
+cat.agent.1.n = &size;
+cat.agent.1.iseller = true
+cat.agent.1.type = seller
+cat.agent.1.id = sellerZIC
+#cat.agent.1.initialtradeentitlement = 10;
+#cat.agent.1.tradtradeEntitlement = 20
+cat.agent.1.strategy = edu.cuny.cat.trader.strategy.RandomConstrainedStrategy
+cat.agent.1.marketselectionstrategy = edu.cuny.cat.trader.marketselection.StimuliResponseMarketSelectionStrategy
+cat.agent.1.marketselectionstrategy.learner = edu.cuny.ai.learning.NArmedBanditLearner
+cat.agent.1.marketselectionstrategy.learner.action_choosing = edu.cuny.ai.learning.EpsilonGreedyActionChoosingPolicy
+cat.agent.1.marketselectionstrategy.learner.action_choosing.epsilon = 0.1
+cat.agent.1.marketselectionstrategy.learner.return_updating = edu.cuny.ai.learning.AdaptiveReturnUpdatingPolicy
+cat.agent.1.marketselectionstrategy.learner.return_updating.learner = edu.cuny.ai.learning.SlidingWindowLearner
+
+###############################################################
+# specialists
+
+
+cat.server.identity_controller.expected_specialist.n = 0
+cat.server.identity_controller.expected_specialist.0 = CDA
+
+cat.specialist.n = 1
+
+cat.specialist.0 = edu.cuny.cat.MarketClient
+cat.specialist.0.n = 1
+cat.specialist.0.type = specialist
+cat.specialist.0.id = CDA
+cat.specialist.0.auctioneer = edu.cuny.cat.market.GenericDoubleAuctioneer
+cat.specialist.0.auctioneer.pricing = edu.cuny.cat.market.pricing.ScheduleBalancingPricingPolicy
+cat.specialist.0.auctioneer.clearing = edu.cuny.cat.market.clearing.ProbabilisticClearingCondition
+cat.specialist.0.auctioneer.accepting = edu.cuny.cat.market.accepting.QuoteBeatingAcceptingPolicy
+cat.specialist.0.auctioneer.charging = edu.cuny.cat.market.charging.FixedChargingPolicy
+cat.specialist.0.auctioneer.charging.registration = 0.1
+cat.specialist.0.auctioneer.charging.information = 0.2
+cat.specialist.0.auctioneer.charging.shout = 0.3
+cat.specialist.0.auctioneer.charging.transaction = 0.4
+cat.specialist.0.auctioneer.charging.profit = 0.1
+
+#Adding the auctioneer policy
+#cat.specialist.0.acutioneer.
+#cat.specialist.0.auctioneer.matching = edu.cunny.cat.market.matching.ThetaShoutEngine
+#cat.specialist.0.auctioneer.theta = 0.1
+
+
+
+###############################################################
+# optional specialists
+
+#cat.specialist.optional.dir = params/elites
+#cat.specialist.optional.base = elites
+
+
+###############################################################
+# game server
+
+# clock controller
+
+#cat.server.clockcontroller = edu.cuny.cat.server.AutoClockController
+#cat.server.clockcontroller = edu.cuny.cat.server.SynchronousClockController
+cat.server.clockcontroller = edu.cuny.cat.server.EventBasedClockController
+
+# clock
+
+cat.server.iterations = 1
+
+cat.server.gamelen = 1
+cat.server.daylen = 10
+cat.server.roundlen = 500
+
+cat.server.gameinit = 0
+cat.server.dayinit = 0
+
+cat.server.gamebreak = 100
+cat.server.daybreak = 0
+cat.server.roundbreak = 200
+cat.server.synctimeout = 10000
+
+cat.server.sessiontimeout = 10000
+
+# registry
+
+cat.server.registry = edu.cuny.cat.registry.SimpleRegistry
+
+# valuer
+
+cat.server.valuation.buyer = edu.cuny.cat.valuation.RandomValuerGenerator
+cat.server.valuation.buyer.minvalue = 50
+cat.server.valuation.buyer.maxvalue = 150
+
+cat.server.valuation.seller = edu.cuny.cat.valuation.RandomValuerGenerator
+cat.server.valuation.seller.minvalue = 50
+cat.server.valuation.seller.maxvalue = 150
+
+# infrastructure
+
+cat.infrastructure = edu.cuny.cat.comm.QueueBasedInfrastructureImpl
+cat.infrastructure = edu.cuny.cat.comm.SocketBasedInfrastructureImpl
+cat.infrastructure.port = 9090
+cat.infrastructure = edu.cuny.cat.comm.CallBasedInfrastructureImpl
+
+# log controller
+
+cat.server.logging = true
+
+# game report
+
+cat.server.report = edu.cuny.cat.stat.CombiGameReport
+cat.server.report.n = 9
+cat.server.report.0 = edu.cuny.cat.stat.ProfitReport
+cat.server.report.1 = edu.cuny.cat.stat.TraderDistributionReport
+cat.server.report.2 = edu.cuny.cat.stat.FeeReport
+cat.server.report.3 = edu.cuny.cat.stat.MarketMetricsReport
+cat.server.report.4 = edu.cuny.cat.stat.ScoreReport
+cat.server.report.4.condition = edu.cuny.cat.stat.DefaultScoreDaysCondition
+cat.server.report.4.condition.debug = true
+cat.server.report.4.condition.start = 0
+cat.server.report.4.condition.prob = 0.9
+cat.server.report.5 = edu.cuny.cat.stat.ReportVariableWriterReport
+cat.server.report.5.filename = testMarketSelection.csv
+cat.server.report.5.separator = ,
+cat.server.report.5.var.n = 8
+cat.server.report.5.var.0 = <specialist>.score
+cat.server.report.5.var.1 = <specialist>.score.marketshare
+cat.server.report.5.var.2 = <specialist>.score.profit
+cat.server.report.5.var.3 = <specialist>.score.transactionrate
+cat.server.report.5.var.4 = <specialist>.profit
+cat.server.report.5.var.5 = <specialist>.trader
+cat.server.report.5.var.6 = <specialist>.<fee>
+cat.server.report.5.var.7 = global.equilibrium.price
+cat.server.report.6 = edu.cuny.cat.stat.ResourceReport
+cat.server.report.7 = edu.cuny.cat.stat.ReportVariableWriterReport
+cat.server.report.7.filename = memoryCDA.csv
+cat.server.report.7.separator = ,
+cat.server.report.7.var.n = 4
+cat.server.report.7.var.0 = memory.max
+cat.server.report.7.var.1 = memory.total
+cat.server.report.7.var.2 = memory.used
+cat.server.report.7.var.3 = memory.free
+
+cat.server.report.8 = edu.cuny.cat.stat.StatisticalReport
+cat.server.report.8.var.n = 2
+cat.server.report.8.var.0 = <specialist>.efficiency
+cat.server.report.8.var.1 = <specialist>.score
+
+# gui logger
+
+cat.appender = guihtml
+
+###############################################################
+# log4j configuration - substitute INFO for DEBUG to turn on debugging output
+
+log4j.rootLogger=INFO, stdout
+
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%m%n
+
+log4j.appender.guihtml=edu.cuny.util.log4j.GraphicalAppender
+log4j.appender.guihtml.layout=edu.cuny.util.log4j.MyHTMLLayout
+log4j.appender.guihtml.layout.LocationInfo=true
+
+
+###############################################################
+# prng
+
+#  Use the 32bit version of the Mersenne Twister algorithm
+cat.prng = edu.cuny.prng.MT32
+
+#  with the following PRNG seed
+cat.seed = 4523
